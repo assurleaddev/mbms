@@ -1,0 +1,79 @@
+# Updated expected output
+help_task:
+  description: >
+    Use tools and your own general knowledge to answer this prompt: `{prompt}`
+    Current year is {current_year}.
+  expected_output: >
+    A natural response in your own words.
+    Bonus points if you add any relevant coordinates into the response.
+    Try to include geojsons and coordinates from directions tool and any other tools into response too as it will help to visualize the data downstream.
+    If geojsons get too big, try to retain top 10-20 points sampled from entire geometry as a simplification. We can still use that as crude approximation.
+    Use proper coordinate format [longitude, latitude] in WGS84 (EPSG:4326)
+  agent: helpful_agent
+
+# New task for GeoJSON 
+geojson_enrichment_task:
+  description: >
+    Take the response from the previous task about: `{prompt}` and transform it into a structured format.
+    
+    Extract the following information:
+    1. "text": The textual response that will be displayed to the user (clean, user-friendly format)
+    2. "geojson": Valid GeoJSON FeatureCollection representing any geographic elements mentioned in the response
+    
+    For the GeoJSON section:
+    - Extract any locations, addresses, coordinates, routes, areas, or geographic references from the text
+    - Convert them to appropriate GeoJSON features (Point, LineString, Polygon)
+    - Do not try to represent polygons via lineString as it won't look very nice
+    - Do not try to extrapolate coordinates more than 50 meters to ensure you always provide accurate responses
+    - Use proper coordinate format [longitude, latitude] in WGS84 (EPSG:4326)
+    - Include meaningful properties for each feature (name, description)
+    - If no geographic data can be extracted, set geojson to null
+    - if the route is too long to represent with a crude line string of 10-20 points, maybe it's best to visualize only points without line string. We do not want lines that cut through city blocks.
+    
+  expected_output: >
+    Intermediate structured response with text and geojson fields for further processing.
+  agent: geojson_enrichment_agent
+  context:
+    - help_task
+
+camera_choreography_task:
+    description: >
+        Take the structured response from the geojson_enrichment_task about: `{prompt}` and enhance it with choreographed map camera commands.
+        
+        Your job is to:
+        1. Keep the existing "text" and "geojson" content from the previous task
+        2. Add "map_commands": A list of MapCommand objects that will create a cinematic experience
+        
+        For the map_commands section:
+        - Analyze the geographic content and create a logical sequence of camera movements and atmospheric effects
+        - Use appropriate Mapbox GL JS commands: "flyTo", "easeTo", "jumpTo", "fitBounds", "setLights", "setFog", "setSnow", "setRain"
+        - Start with atmospheric setup (lighting, weather) if contextually relevant
+        - Then create camera movements with overview first if multiple locations involved
+        - Progressive focus on specific areas of interest with appropriate environmental styling
+        - Consider zoom levels: 1-5 (world), 6-9 (country/region), 10-14 (city), 14-19 (neighborhood), 20+ (building level)
+        - Include smooth transitions with appropriate duration (3000ms for flyTo, 2000-6000ms for easeTo, for a slow tour even 15000+ can be great to keep it calm and smooth)
+        - Set wait_for_completion: true for all commands to ensure sequential execution
+        - Match atmospheric effects to geographic context (fog for coasts, weather for climate stories)
+        - If no geographic content exists, set map_commands to null
+        
+        Example command structures:
+        Camera: {"command": "flyTo", "params": {"center": [lng, lat], "zoom": 12, "duration": 2000, "bearing": 0, "pitch": 0}, "wait_for_completion": true}
+        Lighting: {"command": "setLights", "params": {"preset": "dawn"}, "wait_for_completion": false}
+        Fog: {"command": "setFog", "params": {"color": "rgb(186, 210, 235)", "high-color": "rgb(36, 92, 223)", "horizon-blend": 0.02, "range": [0.5, 10]}, "wait_for_completion": false}
+        Weather: {"command": "setRain", "params": {"intensity": 0.5}, "wait_for_completion": false}
+        
+        Few notes on style:
+        - Try to go slowly with camera movement, otherwise it is hard to admire the scene. I suggest durations of 3000ms and longer.
+        - Try to be creative with combinations of commands, maybe even unpredictable!
+        - Do not rely on directions requests to create a camera route as we can fly around without following the road network precisely.
+        - Try to come up with key waypoints for any complex camera work, at each of them we could change pitch zoom too.
+        - Try to end with a zoomed out view oriented to north, unless user's prompt implies they want something else
+        - It is best not to draw polygons and zoom into them as the overlap between buildings and polygons close up does not look very clear, but user has a final say!
+
+        The final output will use the LocationResponse Pydantic model.
+    expected_output: >
+        Final structured response using LocationResponse model containing text, geojson, and map_commands fields. The map_commands should create a choreographed viewing experience that enhances the geographic narrative.
+    agent: camera_choreographer_agent
+    context:
+        - geojson_enrichment_task
+

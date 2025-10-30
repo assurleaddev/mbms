@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الشفافية - منصة شباب الاستقلال</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script> window.FontAwesomeConfig = { autoReplaceSvg: 'nest'};</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        ::-webkit-scrollbar { display: none;}
+        
+        * {
+            font-family: 'Noto Kufi Arabic', sans-serif;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .glass-dark {
+            background: rgba(45, 45, 58, 0.8);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(110, 192, 183, 0.3);
+        }
+        
+        .card-glow:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(229, 123, 162, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes fadeInSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-slide {
+            animation: fadeInSlide 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes budgetBar {
+            0% { width: 0%; }
+            100% { width: var(--target-width); }
+        }
+        
+        .budget-bar {
+            animation: budgetBar 2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .gradient-overlay {
+            background: linear-gradient(135deg, rgba(229, 123, 162, 0.9) 0%, rgba(110, 192, 183, 0.8) 50%, rgba(45, 45, 58, 0.95) 100%);
+        }
+        
+        .magenta-gradient {
+            background: linear-gradient(135deg, #E57BA2 0%, #F4B6C5 100%);
+        }
+        
+        .pulse-glow {
+            animation: pulseGlow 2s infinite;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(229, 123, 162, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(229, 123, 162, 0.8);
+            }
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px) scale(1.02);
+            transition: all 0.3s ease;
+        }
+        
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .custom-shadow {
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        magenta: '#E57BA2',
+                        rose: '#F4B6C5',
+                        teal: '#6EC0B7',
+                        charcoal: '#2D2D3A'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+
+<header id="header" class="fixed top-0 left-0 right-0 z-50 glass-effect">
+    <div class="container mx-auto px-6 py-4">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <div class="w-12 h-12 bg-magenta rounded-full flex items-center justify-center">
+                    <i class="fas fa-users text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-extrabold text-charcoal">منصة شباب الاستقلال</h1>
+                    <p class="text-sm text-teal font-medium">مشروع القنيطرة التجريبي</p>
+                </div>
+            </div>
+            <nav class="hidden md:flex space-x-8 space-x-reverse">
+                <span class="text-charcoal hover:text-magenta font-semibold transition-colors cursor-pointer">لوحة التحكم</span>
+                <span class="text-charcoal hover:text-magenta font-semibold transition-colors cursor-pointer">المشاريع</span>
+                <span class="text-charcoal hover:text-magenta font-semibold transition-colors cursor-pointer">الفرص</span>
+                <span class="text-magenta hover:text-magenta font-semibold transition-colors cursor-pointer">الشفافية</span>
+                <span class="text-charcoal hover:text-magenta font-semibold transition-colors cursor-pointer">المجتمع</span>
+            </nav>
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <div class="relative">
+                    <i class="fas fa-bell text-charcoal hover:text-magenta cursor-pointer text-xl"></i>
+                    <span class="absolute -top-2 -right-2 bg-magenta text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                </div>
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Profile" class="w-10 h-10 rounded-full border-2 border-magenta">
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="pt-24">
+
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-extrabold text-charcoal mb-4">الشفافية والمساءلة</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    تتبع مباشر لميزانية المدينة ومشاريع التنمية مع إمكانية المراقبة والتقييم المستمر
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+                <div class="glass-effect rounded-3xl p-8 card-glow">
+                    <h3 class="text-2xl font-bold text-charcoal mb-6 flex items-center">
+                        <i class="fas fa-chart-pie text-magenta ml-3 text-3xl"></i>
+                        توزيع الميزانية 2024
+                    </h3>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-semibold text-charcoal">البنية التحتية</span>
+                                <span class="font-bold text-magenta">45%</span>
+                            </div>
+                            <div class="bg-gray-200 rounded-full h-4">
+                                <div class="budget-bar bg-gradient-to-r from-magenta to-rose h-4 rounded-full" style="--target-width: 45%;"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-semibold text-charcoal">التعليم والشباب</span>
+                                <span class="font-bold text-teal">30%</span>
+                            </div>
+                            <div class="bg-gray-200 rounded-full h-4">
+                                <div class="budget-bar bg-gradient-to-r from-teal to-cyan-400 h-4 rounded-full" style="--target-width: 30%;"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-semibold text-charcoal">الصحة والخدمات</span>
+                                <span class="font-bold text-purple-600">15%</span>
+                            </div>
+                            <div class="bg-gray-200 rounded-full h-4">
+                                <div class="budget-bar bg-gradient-to-r from-purple-600 to-purple-400 h-4 rounded-full" style="--target-width: 15%;"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-semibold text-charcoal">البيئة والاستدامة</span>
+                                <span class="font-bold text-green-600">10%</span>
+                            </div>
+                            <div class="bg-gray-200 rounded-full h-4">
+                                <div class="budget-bar bg-gradient-to-r from-green-600 to-green-400 h-4 rounded-full" style="--target-width: 10%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass-effect rounded-3xl p-8 card-glow">
+                    <h3 class="text-2xl font-bold text-charcoal mb-6 flex items-center">
+                        <i class="fas fa-user-tie text-teal ml-3 text-3xl"></i>
+                        كلمة رئيس المجلس
+                    </h3>
+                    
+                    <div class="flex items-start space-x-4 space-x-reverse">
+                        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-8.jpg" alt="Mayor" class="w-20 h-20 rounded-xl border-3 border-teal">
+                        <div>
+                            <h4 class="font-bold text-xl text-charcoal mb-2">د. محمد العلوي</h4>
+                            <p class="text-teal font-semibold mb-4">رئيس المجلس البلدي</p>
+                            <p class="text-gray-700 leading-relaxed">
+                                "نحن ملتزمون بالشفافية الكاملة في إدارة شؤون المدينة. هذه المنصة تمثل خطوة مهمة نحو إشراك الشباب في صنع القرار وبناء مستقبل أفضل لمدينتنا."
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 pt-6 border-t border-gray-200">
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div>
+                                <div class="text-2xl font-bold text-magenta">15</div>
+                                <div class="text-sm text-gray-600">مشروع منجز</div>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-bold text-teal">8</div>
+                                <div class="text-sm text-gray-600">قيد التنفيذ</div>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-bold text-rose">95%</div>
+                                <div class="text-sm text-gray-600">رضا المواطنين</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-16">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-charcoal mb-4">تتبع المشاريع المفصل</h2>
+                    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                        تابع حالة المشاريع الكبرى في المدينة، من الميزانية المخصصة إلى نسبة الإنجاز.
+                    </p>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="glass-effect rounded-3xl p-6 card-glow">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-center">
+                            <div class="md:col-span-2">
+                                <h4 class="text-xl font-bold text-charcoal mb-2">الحديقة المركزية الجديدة</h4>
+                                <p class="text-sm text-gray-600">إنشاء مساحة خضراء ترفيهية بوسط المدينة.</p>
+                            </div>
+                            <div>
+                                <span class="font-bold text-teal text-lg">8,000,000 درهم</span>
+                                <span class="block text-sm text-gray-500">الميزانية المخصصة</span>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-semibold text-charcoal">نسبة الإنجاز</span>
+                                    <span class="font-bold text-teal">30%</span>
+                                </div>
+                                <div class="bg-gray-200 rounded-full h-3">
+                                    <div class="bg-gradient-to-r from-teal to-cyan-400 h-3 rounded-full" style="width: 30%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-effect rounded-3xl p-6 card-glow">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-center">
+                            <div class="md:col-span-2">
+                                <h4 class="text-xl font-bold text-charcoal mb-2">تجديد شبكة الطرق</h4>
+                                <p class="text-sm text-gray-600">إعادة تأهيل الطرق الرئيسية في حي الأمل.</p>
+                            </div>
+                            <div>
+                                <span class="font-bold text-magenta text-lg">12,500,000 درهم</span>
+                                <span class="block text-sm text-gray-500">الميزانية المخصصة</span>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-semibold text-charcoal">نسبة الإنجاز</span>
+                                    <span class="font-bold text-magenta">45%</span>
+                                </div>
+                                <div class="bg-gray-200 rounded-full h-3">
+                                    <div class="bg-gradient-to-r from-magenta to-rose h-3 rounded-full" style="width: 45%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-effect rounded-3xl p-6 card-glow">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-center">
+                            <div class="md:col-span-2">
+                                <h4 class="text-xl font-bold text-charcoal mb-2">توسعة مستشفى المدينة</h4>
+                                <p class="text-sm text-gray-600">بناء جناح جديد للطوارئ والعناية المركزة.</p>
+                            </div>
+                            <div>
+                                <span class="font-bold text-purple-600 text-lg">25,000,000 درهم</span>
+                                <span class="block text-sm text-gray-500">الميزانية المخصصة</span>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-semibold text-charcoal">نسبة الإنجاز</span>
+                                    <span class="font-bold text-purple-600">15%</span>
+                                </div>
+                                <div class="bg-gray-200 rounded-full h-3">
+                                    <div class="bg-gradient-to-r from-purple-600 to-purple-400 h-3 rounded-full" style="width: 15%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-16">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-charcoal mb-4">الوثائق العامة والبيانات المفتوحة</h2>
+                    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                        الوصول المباشر إلى التقارير، محاضر الجلسات، والبيانات العامة للمدينة.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="glass-effect rounded-3xl p-6 text-center card-glow">
+                        <i class="fas fa-file-pdf text-5xl text-magenta mb-4"></i>
+                        <h4 class="text-lg font-bold text-charcoal mb-2">محاضر الجلسات</h4>
+                        <p class="text-sm text-gray-600 mb-4">محاضر جلسات المجلس البلدي لعام 2024.</p>
+                        <button class="w-full bg-magenta text-white py-2 rounded-lg font-semibold hover:bg-rose transition-colors">تحميل</button>
+                    </div>
+                    <div class="glass-effect rounded-3xl p-6 text-center card-glow">
+                        <i class="fas fa-file-invoice-dollar text-5xl text-teal mb-4"></i>
+                        <h4 class="text-lg font-bold text-charcoal mb-2">التقارير المالية</h4>
+                        <p class="text-sm text-gray-600 mb-4">التقرير المالي المفصل للربع الثالث من 2024.</p>
+                        <button class="w-full bg-teal text-white py-2 rounded-lg font-semibold hover:bg-cyan-600 transition-colors">تحميل</button>
+                    </div>
+                    <div class="glass-effect rounded-3xl p-6 text-center card-glow">
+                        <i class="fas fa-file-signature text-5xl text-purple-600 mb-4"></i>
+                        <h4 class="text-lg font-bold text-charcoal mb-2">العقود والصفقات</h4>
+                        <p class="text-sm text-gray-600 mb-4">سجل الصفقات والعقود العامة المبرمة.</p>
+                        <button class="w-full bg-purple-600 text-white py-2 rounded-lg font-semibold hover:bg-purple-700 transition-colors">تصفح</button>
+                    </div>
+                    <div class="glass-effect rounded-3xl p-6 text-center card-glow">
+                        <i class="fas fa-database text-5xl text-orange-500 mb-4"></i>
+                        <h4 class="text-lg font-bold text-charcoal mb-2">بوابة البيانات المفتوحة</h4>
+                        <p class="text-sm text-gray-600 mb-4">بيانات خام حول النقل، البيئة، والديموغرافيا.</p>
+                        <button class="w-full bg-orange-500 text-white py-2 rounded-lg font-semibold hover:bg-orange-600 transition-colors">الانتقال للبوابة</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+<footer id="footer" class="bg-charcoal text-white py-12">
+    <div class="container mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div>
+                <div class="flex items-center space-x-3 space-x-reverse mb-6">
+                    <div class="w-12 h-12 bg-magenta rounded-full flex items-center justify-center">
+                        <i class="fas fa-users text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-extrabold">منصة شباب الاستقلال</h3>
+                        <p class="text-sm text-teal">مشروع القنيطرة التجريبي</p>
+                    </div>
+                </div>
+                <p class="text-gray-300 leading-relaxed">
+                    منصة رقمية تفاعلية تهدف إلى تمكين الشباب من المشاركة الفعالة في صنع القرار المحلي وبناء مستقبل أفضل لمجتمعاتهم.
+                </p>
+            </div>
+            
+            <div>
+                <h4 class="text-lg font-bold mb-4">روابط مهمة</h4>
+                <ul class="space-y-3">
+                    <li><span class="text-gray-300 hover:text-magenta transition-colors cursor-pointer">عن المنصة</span></li>
+                    <li><span class="text-gray-300 hover:text-magenta transition-colors cursor-pointer">كيف تعمل</span></li>
+                    <li><span class="text-gray-300 hover:text-magenta transition-colors cursor-pointer">الأسئلة الشائعة</span></li>
+                    <li><span class="text-gray-300 hover:text-magenta transition-colors cursor-pointer">سياسة الخصوصية</span></li>
+                    <li><span class="text-gray-300 hover:text-magenta transition-colors cursor-pointer">شروط الاستخدام</span></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="text-lg font-bold mb-4">الخدمات</h4>
+                <ul class="space-y-3">
+                    <li><span class="text-gray-300 hover:text-magenta transition-colors cursor-pointer">المشاريع التطوعية</span></li>
+                    <li><span class="text-gray-300 hover:text-magenta transition-colors cursor-pointer">الفرص التدريبية</span></li>
+                    <li><span class="text-gray-300 hover:text-magenta transition-colors cursor-pointer">ورش العمل</span></li>
+                    <li><span class="text-gray-300 hover:text-magenta transition-colors cursor-pointer">الاستشارات</span></li>
+                    <li><span class="text-gray-300 hover:text-magenta transition-colors cursor-pointer">الدعم التقني</span></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="text-lg font-bold mb-4">تواصل معنا</h4>
+                <div class="space-y-3 mb-6">
+                    <div class="flex items-center space-x-3 space-x-reverse">
+                        <i class="fas fa-map-marker-alt text-magenta"></i>
+                        <span class="text-gray-300">القنيطرة، المغرب</span>
+                    </div>
+                    <div class="flex items-center space-x-3 space-x-reverse">
+                        <i class="fas fa-phone text-magenta"></i>
+                        <span class="text-gray-300">+212 537 123 456</span>
+                    </div>
+                    <div class="flex items-center space-x-3 space-x-reverse">
+                        <i class="fas fa-envelope text-magenta"></i>
+                        <span class="text-gray-300">info@istiqlal-youth.ma</span>
+                    </div>
+                </div>
+                
+                <div class="flex space-x-4 space-x-reverse">
+                    <span class="w-10 h-10 bg-magenta hover:bg-rose rounded-full flex items-center justify-center transition-colors cursor-pointer">
+                        <i class="fab fa-facebook-f"></i>
+                    </span>
+                    <span class="w-10 h-10 bg-magenta hover:bg-rose rounded-full flex items-center justify-center transition-colors cursor-pointer">
+                        <i class="fab fa-twitter"></i>
+                    </span>
+                    <span class="w-10 h-10 bg-magenta hover:bg-rose rounded-full flex items-center justify-center transition-colors cursor-pointer">
+                        <i class="fab fa-instagram"></i>
+                    </span>
+                    <span class="w-10 h-10 bg-magenta hover:bg-rose rounded-full flex items-center justify-center transition-colors cursor-pointer">
+                        <i class="fab fa-linkedin-in"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-700 mt-12 pt-8 text-center">
+            <p class="text-gray-400">
+                © 2024 منصة شباب الاستقلال - مشروع القنيطرة التجريبي. جميع الحقوق محفوظة.
+            </p>
+        </div>
+    </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate budget bars on scroll
+    const budgetBars = document.querySelectorAll('.budget-bar');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.width = entry.target.style.getPropertyValue('--target-width');
+                entry.target.style.animationPlayState = 'running';
+            }
+        });
+    });
+    
+    budgetBars.forEach(bar => {
+        bar.style.width = '0%';
+        observer.observe(bar);
+    });
+    
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+    
+    // Add parallax effect to hero background
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const heroSection = document.getElementById('hero');
+        if (heroSection) {
+            heroSection.style.transform = `translateY(${scrolled * 0.5}px)`;
+        }
+    });
+});
+</script>
+
+</body>
+</html>

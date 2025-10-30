@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة شباب الاستقلال - مشروع القنيطرة التجريبي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script> window.FontAwesomeConfig = { autoReplaceSvg: 'nest'};</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        ::-webkit-scrollbar { display: none;}
+        
+        * {
+            font-family: 'Noto Kufi Arabic', sans-serif;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .glass-dark {
+            background: rgba(45, 45, 58, 0.8);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(110, 192, 183, 0.3);
+        }
+        
+        .card-glow:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(229, 123, 162, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes fadeInSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-slide {
+            animation: fadeInSlide 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes budgetBar {
+            0% { width: 0%; }
+            100% { width: var(--target-width); }
+        }
+        
+        .budget-bar {
+            animation: budgetBar 2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .gradient-overlay {
+            background: linear-gradient(135deg, rgba(229, 123, 162, 0.9) 0%, rgba(110, 192, 183, 0.8) 50%, rgba(45, 45, 58, 0.95) 100%);
+        }
+        
+        .magenta-gradient {
+            background: linear-gradient(135deg, #E57BA2 0%, #F4B6C5 100%);
+        }
+        
+        .pulse-glow {
+            animation: pulseGlow 2s infinite;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(229, 123, 162, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(229, 123, 162, 0.8);
+            }
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px) scale(1.02);
+            transition: all 0.3s ease;
+        }
+        
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .custom-shadow {
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        magenta: '#E57BA2',
+                        rose: '#F4B6C5',
+                        teal: '#6EC0B7',
+                        charcoal: '#2D2D3A'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+
+<header id="header" class="fixed top-0 left-0 right-0 z-50 glass-effect">
+    <div class="container mx-auto px-6 py-4">
+        <div class="flex justify-between items-center">
+            <a href="home.html" class="flex items-center space-x-4 space-x-reverse">
+                <div class="w-12 h-12 bg-magenta rounded-full flex items-center justify-center">
+                    <i class="fas fa-users text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-extrabold text-charcoal">منصة شباب الاستقلال</h1>
+                    <p class="text-sm text-teal font-medium">مشروع القنيطرة التجريبي</p>
+                </div>
+            </a>
+            
+            <nav class="hidden md:flex space-x-8 space-x-reverse">
+                <a href="home.html" class="text-magenta font-semibold transition-colors cursor-pointer">الرئيسية</a>
+                <a href="dashboard.html" class="text-charcoal hover:text-magenta font-semibold transition-colors cursor-pointer">لوحة التحكم</a>
+                <a href="projects.html" class="text-charcoal hover:text-magenta font-semibold transition-colors cursor-pointer">المشاريع</a>
+                <a href="opportunities.html" class="text-charcoal hover:text-magenta font-semibold transition-colors cursor-pointer">الفرص</a>
+                <a href="transparency.html" class="text-charcoal hover:text-magenta font-semibold transition-colors cursor-pointer">الشفافية</a>
+                <a href="community.html" class="text-charcoal hover:text-magenta font-semibold transition-colors cursor-pointer">المجتمع</a>
+            </nav>
+            
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <div class="relative">
+                    <i class="fas fa-bell text-charcoal hover:text-magenta cursor-pointer text-xl"></i>
+                    <span class="absolute -top-2 -right-2 bg-magenta text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                </div>
+                <a href="dashboard.html">
+                    <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Profile" class="w-10 h-10 rounded-full border-2 border-magenta cursor-pointer">
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section id="hero" class="relative h-[800px] parallax-bg overflow-hidden">
+    <div class="absolute inset-0">
+        <img class="w-full h-full object-cover" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/d0c3dfac07-fb12e3a447e78f7652a5.png" alt="night city lights aerial view dark modern urban landscape" />
+        <div class="absolute inset-0 gradient-overlay"></div>
+    </div>
+    <div class="relative h-full flex items-center justify-center px-6">
+        <div class="glass-effect rounded-3xl p-12 max-w-4xl text-center custom-shadow">
+            <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 fade-in-slide text-shadow">
+                شباب القنيطرة
+                <span class="block text-4xl md:text-6xl text-rose mt-2">يقودون التغيير</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-white/90 mb-8 fade-in-slide font-medium leading-relaxed">
+                منصة رقمية تفاعلية تمكن الشباب من المشاركة الفعالة في صنع القرار المحلي
+                <br>
+                <span class="text-teal font-bold">شفافية • مشاركة • تأثير</span>
+            </p>
+            <div class="flex flex-col md:flex-row gap-6 justify-center fade-in-slide">
+                <a href="dashboard.html" class="bg-magenta hover:bg-rose text-white px-10 py-4 rounded-2xl font-extrabold text-lg hover-lift pulse-glow inline-block">
+                    <i class="fas fa-rocket ml-2"></i>
+                    ابدأ رحلتك الآن
+                </a>
+                <button class="border-2 border-teal text-teal hover:bg-teal hover:text-white px-10 py-4 rounded-2xl font-bold text-lg transition-all hover-lift">
+                    <i class="fas fa-play-circle ml-2"></i>
+                    شاهد كيف نعمل
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="user-status" class="py-16 bg-gradient-to-br from-charcoal via-gray-800 to-charcoal">
+    <div class="container mx-auto px-6">
+        <div class="glass-dark rounded-3xl p-8 md:p-12">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="text-center lg:text-right">
+                    <div class="relative inline-block mb-6">
+                        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="User Avatar" class="w-32 h-32 rounded-full border-4 border-magenta mx-auto lg:mx-0">
+                        <div class="absolute -bottom-2 -right-2 bg-teal text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-lg">
+                            15
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2">سارة أحمد</h3>
+                    <p class="text-teal font-semibold mb-4">ناشطة مجتمعية • المستوى الذهبي</p>
+                    <div class="bg-gradient-to-r from-magenta to-rose rounded-xl p-4">
+                        <div class="text-3xl font-extrabold text-white">2,847</div>
+                        <div class="text-white/90">نقطة تأثير</div>
+                    </div>
+                </div>
+                
+                <div class="lg:col-span-2 space-y-6">
+                    <h2 class="text-3xl font-extrabold text-white mb-8">إنجازاتك هذا الشهر</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="glass-effect rounded-xl p-6 hover-lift">
+                            <div class="flex items-center justify-between mb-4">
+                                <i class="fas fa-lightbulb text-3xl text-yellow-400"></i>
+                                <span class="text-2xl font-bold text-magenta">12</span>
+                            </div>
+                            <h4 class="text-white font-bold text-lg mb-2">اقتراحات مقدمة</h4>
+                            <p class="text-white/80">زيادة 40% عن الشهر الماضي</p>
+                        </div>
+                        
+                        <div class="glass-effect rounded-xl p-6 hover-lift">
+                            <div class="flex items-center justify-between mb-4">
+                                <i class="fas fa-vote-yea text-3xl text-teal"></i>
+                                <span class="text-2xl font-bold text-magenta">8</span>
+                            </div>
+                            <h4 class="text-white font-bold text-lg mb-2">تصويتات مشاركة</h4>
+                            <p class="text-white/80">مشاركة فعالة في القرارات</p>
+                        </div>
+                        
+                        <div class="glass-effect rounded-xl p-6 hover-lift">
+                            <div class="flex items-center justify-between mb-4">
+                                <i class="fas fa-comments text-3xl text-rose"></i>
+                                <span class="text-2xl font-bold text-magenta">24</span>
+                            </div>
+                            <h4 class="text-white font-bold text-lg mb-2">نقاشات مجتمعية</h4>
+                            <p class="text-white/80">تفاعل إيجابي مع المجتمع</p>
+                        </div>
+                        
+                        <div class="glass-effect rounded-xl p-6 hover-lift">
+                            <div class="flex items-center justify-between mb-4">
+                                <i class="fas fa-trophy text-3xl text-yellow-500"></i>
+                                <span class="text-2xl font-bold text-magenta">3</span>
+                            </div>
+                            <h4 class="text-white font-bold text-lg mb-2">إنجازات جديدة</h4>
+                            <p class="text-white/80">شارات تقدير للمساهمات</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="transparency" class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-charcoal mb-4">الشفافية والمساءلة</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                تتبع مباشر لميزانية المدينة ومشاريع التنمية مع إمكانية المراقبة والتقييم المستمر
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+            <div class="glass-effect rounded-3xl p-8 card-glow">
+                <h3 class="text-2xl font-bold text-charcoal mb-6 flex items-center">
+                    <i class="fas fa-chart-pie text-magenta ml-3 text-3xl"></i>
+                    توزيع الميزانية 2024
+                </h3>
+                
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold text-charcoal">البنية التحتية</span>
+                            <span class="font-bold text-magenta">45%</span>
+                        </div>
+                        <div class="bg-gray-200 rounded-full h-4">
+                            <div class="budget-bar bg-gradient-to-r from-magenta to-rose h-4 rounded-full" style="--target-width: 45%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold text-charcoal">التعليم والشباب</span>
+                            <span class="font-bold text-teal">30%</span>
+                        </div>
+                        <div class="bg-gray-200 rounded-full h-4">
+                            <div class="budget-bar bg-gradient-to-r from-teal to-cyan-400 h-4 rounded-full" style="--target-width: 30%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold text-charcoal">الصحة والخدمات</span>
+                            <span class="font-bold text-purple-600">15%</span>
+                        </div>
+                        <div class="bg-gray-200 rounded-full h-4">
+                            <div class="budget-bar bg-gradient-to-r from-purple-600 to-purple-400 h-4 rounded-full" style="--target-width: 15%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold text-charcoal">البيئة والاستدامة</span>
+                            <span class="font-bold text-green-600">10%</span>
+                        </div>
+                        <div class="bg-gray-200 rounded-full h-4">
+                            <div class="budget-bar bg-gradient-to-r from-green-600 to-green-400 h-4 rounded-full" style="--target-width: 10%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass-effect rounded-3xl p-8 card-glow">
+                <h3 class="text-2xl font-bold text-charcoal mb-6 flex items-center">
+                    <i class="fas fa-user-tie text-teal ml-3 text-3xl"></i>
+                    كلمة رئيس المجلس
+                </h3>
+                
+                <div class="flex items-start space-x-4 space-x-reverse">
+                    <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-8.jpg" alt="Mayor" class="w-20 h-20 rounded-xl border-3 border-teal">
+                    <div>
+                        <h4 class="font-bold text-xl text-charcoal mb-2">د. محمد العلوي</h4>
+                        <p class="text-teal font-semibold mb-4">رئيس المجلس البلدي</p>
+                        <p class="text-gray-700 leading-relaxed">
+                            "نحن ملتزمون بالشفافية الكاملة في إدارة شؤون المدينة. هذه المنصة تمثل خطوة مهمة نحو إشراك الشباب في صنع القرار وبناء مستقبل أفضل لمدينتنا."
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="mt-6 pt-6 border-t border-gray-200">
+                    <div class="grid grid-cols-3 gap-4 text-center">
+                        <div>
+                            <div class="text-2xl font-bold text-magenta">15</div>
+                            <div class="text-sm text-gray-600">مشروع منجز</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-teal">8</div>
+                            <div class="text-sm text-gray-600">قيد التنفيذ</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-rose">95%</div>
+                            <div class="text-sm text-gray-600">رضا المواطنين</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <a href="transparency.html" class="bg-charcoal text-white px-8 py-3 rounded-xl font-bold hover:bg-gray-700 transition-colors">
+                اكتشف المزيد عن الشفافية
+            </a>
+        </div>
+    </div>
+</section>
+
+<section id="projects" class="py-16 bg-gradient-to-br from-gray-50 to-gray-100">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-charcoal mb-4">المشاريع النشطة</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                شارك في المشاريع التي تهمك وساهم في تطوير مدينتك من خلال أفكارك واقتراحاتك
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="glass-effect rounded-3xl overflow-hidden card-glow border-4 border-rose">
+                <div class="relative">
+                    <img class="w-full h-48 object-cover" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/497200300b-a2f4c9df3c5adecd7490.png" alt="modern city council meeting room with young people discussing" />
+                    <div class="absolute top-4 right-4 bg-magenta text-white px-3 py-1 rounded-full text-sm font-bold">
+                        مميز
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-charcoal mb-3">تحدي اختراق المجلس</h3>
+                    <p class="text-gray-600 mb-4">
+                        مسابقة لأفضل الحلول التقنية لتحسين الخدمات البلدية وزيادة مشاركة المواطنين
+                    </p>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-2 space-x-reverse">
+                            <i class="fas fa-users text-teal"></i>
+                            <span class="text-sm text-gray-600">156 مشارك</span>
+                        </div>
+                        <div class="flex items-center space-x-2 space-x-reverse">
+                            <i class="fas fa-calendar text-magenta"></i>
+                            <span class="text-sm text-gray-600">15 يوم متبقي</span>
+                        </div>
+                    </div>
+                    <a href="projects.html" class="block w-full text-center bg-magenta hover:bg-rose text-white py-3 rounded-xl font-bold transition-colors">
+                        انضم الآن
+                    </a>
+                </div>
+            </div>
+            
+            <div class="glass-effect rounded-3xl overflow-hidden card-glow">
+                <div class="relative">
+                    <img class="w-full h-48 object-cover" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/0df34b17c3-58a5d3142e2dabce4e17.png" alt="sustainable urban garden with solar panels and green spaces" />
+                    <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                        بيئي
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-charcoal mb-3">القنيطرة الخضراء 2030</h3>
+                    <p class="text-gray-600 mb-4">
+                        مبادرة شاملة لتحويل المدينة إلى نموذج مستدام صديق للبيئة
+                    </p>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-2 space-x-reverse">
+                            <i class="fas fa-leaf text-green-500"></i>
+                            <span class="text-sm text-gray-600">89 مقترح</span>
+                        </div>
+                        <div class="flex items-center space-x-2 space-x-reverse">
+                            <i class="fas fa-chart-line text-teal"></i>
+                            <span class="text-sm text-gray-600">70% مكتمل</span>
+                        </div>
+                    </div>
+                    <a href="projects.html" class="block w-full text-center bg-teal hover:bg-cyan-600 text-white py-3 rounded-xl font-bold transition-colors">
+                        ساهم بفكرة
+                    </a>
+                </div>
+            </div>
+            
+            <div class="glass-effect rounded-3xl overflow-hidden card-glow">
+                <div class="relative">
+                    <img class="w-full h-48 object-cover" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/e7fb6fb380-d7c3d2f5d126f683d35d.png" alt="modern digital learning center with youth using tablets and computers" />
+                    <div class="absolute top-4 right-4 bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                        تعليمي
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-charcoal mb-3">مراكز التعلم الرقمي</h3>
+                    <p class="text-gray-600 mb-4">
+                        إنشاء مراكز حديثة لتعليم التقنيات الجديدة وريادة الأعمال للشباب
+                    </p>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-2 space-x-reverse">
+                            <i class="fas fa-graduation-cap text-blue-500"></i>
+                            <span class="text-sm text-gray-600">234 مهتم</span>
+                        </div>
+                        <div class="flex items-center space-x-2 space-x-reverse">
+                            <i class="fas fa-map-marker-alt text-magenta"></i>
+                            <span class="text-sm text-gray-600">5 مواقع</span>
+                        </div>
+                    </div>
+                    <a href="projects.html" class="block w-full text-center bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl font-bold transition-colors">
+                        اعرف المزيد
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-12">
+            <a href="projects.html" class="bg-charcoal text-white px-8 py-3 rounded-xl font-bold hover:bg-gray-700 transition-colors">
+                عرض جميع المشاريع
+            </a>
+        </div>
+    </div>
+</section>
+
+<section id="opportunities" class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-charcoal mb-4">الفرص المتاحة</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                اكتشف الفرص التدريبية والتطوعية والمهنية المتاحة للشباب في مختلف المجالات
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="md:col-span-2 magenta-gradient rounded-3xl p-8 text-white card-glow">
+                <div class="flex items-center mb-6">
+                    <i class="fas fa-file-alt text-4xl ml-4"></i>
+                    <div>
+                        <h3 class="text-2xl font-bold">مذكرات السياسة الكوميدية</h3>
+                        <p class="text-white/90">برنامج تدريبي مبتكر</p>
+                    </div>
+                </div>
+                <p class="text-lg mb-6 leading-relaxed">
+                    برنامج فريد يجمع بين التحليل السياسي والكوميديا لتبسيط القضايا المعقدة وجعلها أكثر قربًا من الشباب. تعلم كيفية تحليل السياسات العامة بطريقة مبتكرة وممتعة.
+                </p>
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center space-x-3 space-x-reverse">
+                        <i class="fas fa-clock text-xl"></i>
+                        <span>6 أسابيع</span>
+                    </div>
+                    <div class="flex items-center space-x-3 space-x-reverse">
+                        <i class="fas fa-certificate text-xl"></i>
+                        <span>شهادة معتمدة</span>
+                    </div>
+                </div>
+                <a href="opportunities.html" class="inline-block bg-white text-magenta px-8 py-3 rounded-xl font-bold hover:bg-gray-100 transition-colors">
+                    سجل الآن - مجاني
+                </a>
+            </div>
+            
+            <div class="glass-effect rounded-3xl p-6 card-glow">
+                <div class="text-center mb-4">
+                    <i class="fas fa-handshake text-4xl text-teal mb-3"></i>
+                    <h3 class="text-xl font-bold text-charcoal">تطوع معنا</h3>
+                </div>
+                <p class="text-gray-600 text-center mb-4">
+                    انضم لفريق المتطوعين وساهم في خدمة مجتمعك
+                </p>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-teal mb-1">45</div>
+                    <div class="text-sm text-gray-600">فرصة متاحة</div>
+                </div>
+            </div>
+            
+            <div class="glass-effect rounded-3xl p-6 card-glow">
+                <div class="text-center mb-4">
+                    <i class="fas fa-briefcase text-4xl text-orange-500 mb-3"></i>
+                    <h3 class="text-xl font-bold text-charcoal">فرص عمل</h3>
+                </div>
+                <p class="text-gray-600 text-center mb-4">
+                    وظائف وتدريبات مهنية في القطاع العام والخاص
+                </p>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-orange-500 mb-1">23</div>
+                    <div class="text-sm text-gray-600">وظيفة جديدة</div>
+                </div>
+            </div>
+            
+            <div class="glass-effect rounded-3xl p-6 card-glow">
+                <div class="text-center mb-4">
+                    <i class="fas fa-graduation-cap text-4xl text-purple-600 mb-3"></i>
+                    <h3 class="text-xl font-bold text-charcoal">منح دراسية</h3>
+                </div>
+                <p class="text-gray-600 text-center mb-4">
+                    منح للدراسة الجامعية والدورات التخصصية
+                </p>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-purple-600 mb-1">12</div>
+                    <div class="text-sm text-gray-600">منحة متاحة</div>
+                </div>
+            </div>
+            
+            <div class="glass-effect rounded-3xl p-6 card-glow">
+                <div class="text-center mb-4">
+                    <i class="fas fa-rocket text-4xl text-red-500 mb-3"></i>
+                    <h3 class="text-xl font-bold text-charcoal">ريادة الأعمال</h3>
+                </div>
+                <p class="text-gray-600 text-center mb-4">
+                    برامج دعم المشاريع الناشئة والأفكار الإبداعية
+                </p>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-red-500 mb-1">8</div>
+                    <div class="text-sm text-gray-600">برنامج نشط</div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-12">
+            <a href="opportunities.html" class="bg-charcoal text-white px-8 py-3 rounded-xl font-bold hover:bg-gray-700 transition-colors">
+                عرض جميع الفرص
+            </a>
+        </div>
+    </div>
+</section>
+
+<section id="community" class="py-16 bg-gradient-to-br from-teal/10 to-magenta/10">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-charcoal mb-4">المجتمع والتفاعل</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                انضم لنقاشات المجتمع وشارك آرائك حول القضايا المهمة التي تؤثر على حياتنا اليومية
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            <div class="glass-effect rounded-3xl p-8 card-glow">
+                <h3 class="text-2xl font-bold text-charcoal mb-6 flex items-center">
+                    <i class="fas fa-comments text-magenta ml-3 text-3xl"></i>
+                    النقاشات النشطة
+                </h3>
+                
+                <div class="space-y-6">
+                    <div class="border-r-4 border-magenta pr-4">
+                        <h4 class="font-bold text-charcoal mb-2">تطوير النقل العام في القنيطرة</h4>
+                        <p class="text-gray-600 text-sm mb-2">
+                            نقاش حول خطة تطوير شبكة النقل العام وإدخال وسائل نقل صديقة للبيئة
+                        </p>
+                        <div class="flex items-center space-x-4 space-x-reverse text-sm text-gray-500">
+                            <span><i class="fas fa-user ml-1"></i> 127 مشارك</span>
+                            <span><i class="fas fa-comment ml-1"></i> 89 تعليق</span>
+                            <span><i class="fas fa-clock ml-1"></i> منذ ساعتين</span>
+                        </div>
+                    </div>
+                    
+                    <div class="border-r-4 border-teal pr-4">
+                        <h4 class="font-bold text-charcoal mb-2">مشروع الحديقة المركزية الجديدة</h4>
+                        <p class="text-gray-600 text-sm mb-2">
+                            استطلاع آراء المواطنين حول تصميم وخدمات الحديقة المركزية المقترحة
+                        </p>
+                        <div class="flex items-center space-x-4 space-x-reverse text-sm text-gray-500">
+                            <span><i class="fas fa-user ml-1"></i> 203 مشارك</span>
+                            <span><i class="fas fa-comment ml-1"></i> 156 تعليق</span>
+                            <span><i class="fas fa-clock ml-1"></i> منذ 4 ساعات</span>
+                        </div>
+                    </div>
+                    
+                    <div class="border-r-4 border-rose pr-4">
+                        <h4 class="font-bold text-charcoal mb-2">برنامج دعم الشباب الريادي</h4>
+                        <p class="text-gray-600 text-sm mb-2">
+                            مناقشة آليات تطوير برنامج دعم المشاريع الشبابية والمؤسسات الناشئة
+                        </p>
+                        <div class="flex items-center space-x-4 space-x-reverse text-sm text-gray-500">
+                            <span><i class="fas fa-user ml-1"></i> 94 مشارك</span>
+                            <span><i class="fas fa-comment ml-1"></i> 67 تعليق</span>
+                            <span><i class="fas fa-clock ml-1"></i> منذ يوم</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass-effect rounded-3xl p-8 card-glow">
+                <h3 class="text-2xl font-bold text-charcoal mb-6 flex items-center">
+                    <i class="fas fa-poll text-teal ml-3 text-3xl"></i>
+                    الاستطلاعات الحالية
+                </h3>
+                
+                <div class="space-y-6">
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <h4 class="font-bold text-charcoal mb-3">ما هي أولويتك الأولى لتطوير المدينة؟</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm">تحسين البنية التحتية</span>
+                                <div class="flex items-center space-x-2 space-x-reverse">
+                                    <div class="bg-magenta h-2 rounded-full" style="width: 120px;"></div>
+                                    <span class="text-sm font-bold text-magenta">45%</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm">زيادة المساحات الخضراء</span>
+                                <div class="flex items-center space-x-2 space-x-reverse">
+                                    <div class="bg-teal h-2 rounded-full" style="width: 80px;"></div>
+                                    <span class="text-sm font-bold text-teal">30%</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm">تطوير الخدمات الرقمية</span>
+                                <div class="flex items-center space-x-2 space-x-reverse">
+                                    <div class="bg-rose h-2 rounded-full" style="width: 65px;"></div>
+                                    <span class="text-sm font-bold text-rose">25%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="community.html" class="block w-full text-center mt-4 bg-charcoal text-white py-2 rounded-lg font-semibold hover:bg-gray-700 transition-colors">
+                            شارك برأيك
+                        </a>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-teal/20 to-magenta/20 rounded-xl p-4">
+                        <h4 class="font-bold text-charcoal mb-2">استطلاع سريع</h4>
+                        <p class="text-sm text-gray-600 mb-3">
+                            كيف تقيم جودة الخدمات البلدية الحالية؟
+                        </p>
+                        <div class="flex justify-between">
+                            <button class="bg-red-500 text-white px-3 py-1 rounded text-sm">ضعيف</button>
+                            <button class="bg-yellow-500 text-white px-3 py-1 rounded text-sm">متوسط</button>
+                            <button class="bg-green-500 text-white px-3 py-1 rounded text-sm">جيد</button>
+                            <button class="bg-teal text-white px-3 py-1 rounded text-sm">ممتاز</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <a href="community.html" class="bg-charcoal text-white px-8 py-3 rounded-xl font-bold hover:bg-gray-700 transition-colors">
+                انضم إلى المجتمع
+            </a>
+        </div>
+    </div>
+</section>
+
+<section id="events" class="py-16 bg-charcoal">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-4">الفعاليات وورش العمل</h2>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                احضر الفعاليات التدريبية وورش العمل التفاعلية لتطوير مهاراتك والتواصل مع الشباب الآخرين
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="glass-dark rounded-3xl overflow-hidden card-glow">
+                <div class="relative">
+                    <img class="w-full h-48 object-cover" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/5f533bb1d5-2e7f93b690e4558056b8.png" alt="workshop on digital skills training with young people using laptops" />
+                    <div class="absolute top-4 right-4 bg-magenta text-white px-3 py-1 rounded-full text-sm font-bold">
+                        غدًا
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-white mb-2">ورشة المهارات الرقمية</h3>
+                    <p class="text-gray-300 mb-4 text-sm">
+                        تعلم أساسيات التسويق الرقمي وإدارة وسائل التواصل الاجتماعي
+                    </p>
+                    <div class="flex items-center justify-between text-sm text-gray-400 mb-4">
+                        <span><i class="fas fa-calendar ml-1"></i> 20 نوفمبر</span>
+                        <span><i class="fas fa-clock ml-1"></i> 2:00 - 5:00 م</span>
+                        <span><i class="fas fa-map-marker-alt ml-1"></i> قاعة التدريب</span>
+                    </div>
+                    <button class="w-full bg-magenta hover:bg-rose text-white py-2 rounded-lg font-semibold transition-colors">
+                        احجز مقعدك
+                    </button>
+                </div>
+            </div>
+            
+            <div class="glass-dark rounded-3xl overflow-hidden card-glow">
+                <div class="relative">
+                    <img class="w-full h-48 object-cover" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/e812a8afb2-83699d088538b139d3b8.png" alt="public speaking workshop with young person presenting to audience" />
+                    <div class="absolute top-4 right-4 bg-teal text-white px-3 py-1 rounded-full text-sm font-bold">
+                        الأسبوع القادم
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-white mb-2">فن الخطابة والتأثير</h3>
+                    <p class="text-gray-300 mb-4 text-sm">
+                        طور مهاراتك في التحدث أمام الجمهور والتأثير الإيجابي
+                    </p>
+                    <div class="flex items-center justify-between text-sm text-gray-400 mb-4">
+                        <span><i class="fas fa-calendar ml-1"></i> 25 نوفمبر</span>
+                        <span><i class="fas fa-clock ml-1"></i> 10:00 ص - 1:00 م</span>
+                        <span><i class="fas fa-users ml-1"></i> 25 مقعد</span>
+                    </div>
+                    <button class="w-full bg-teal hover:bg-cyan-600 text-white py-2 rounded-lg font-semibold transition-colors">
+                        انضم الآن
+                    </button>
+                </div>
+            </div>
+            
+            <div class="glass-dark rounded-3xl overflow-hidden card-glow">
+                <div class="relative">
+                    <img class="w-full h-48 object-cover" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/f899118825-c2d5d00659d9d4873629.png" alt="environmental sustainability workshop with recycling and green projects" />
+                    <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                        مجاني
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-white mb-2">الاستدامة البيئية</h3>
+                    <p class="text-gray-300 mb-4 text-sm">
+                        تعرف على طرق المساهمة في حماية البيئة والتنمية المستدامة
+                    </p>
+                    <div class="flex items-center justify-between text-sm text-gray-400 mb-4">
+                        <span><i class="fas fa-calendar ml-1"></i> 2 ديسمبر</span>
+                        <span><i class="fas fa-clock ml-1"></i> 3:00 - 6:00 م</span>
+                        <span><i class="fas fa-leaf ml-1"></i> مشروع بيئي</span>
+                    </div>
+                    <button class="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg font-semibold transition-colors">
+                        سجل مجانًا
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-12">
+            <button class="bg-white text-charcoal px-8 py-3 rounded-xl font-bold hover:bg-gray-100 transition-colors">
+                عرض جميع الفعاليات
+            </button>
+        </div>
+    </div>
+</section>
+
+<section id="success-stories" class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-charcoal mb-4">قصص نجاح ملهمة</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                تعرف على الشباب الذين أحدثوا تغييرًا حقيقيًا في مجتمعهم من خلال المنصة
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="glass-effect rounded-3xl p-6 card-glow">
+                <div class="text-center mb-6">
+                    <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-6.jpg" alt="Success Story 1" class="w-20 h-20 rounded-full mx-auto mb-4 border-3 border-magenta">
+                    <h3 class="text-xl font-bold text-charcoal">ليلى بن علي</h3>
+                    <p class="text-teal font-semibold">مطورة تطبيقات • 22 سنة</p>
+                </div>
+                <blockquote class="text-gray-600 text-center italic mb-4">
+                    "من خلال المنصة، تمكنت من تطوير تطبيق لتحسين خدمات النظافة في المدينة. الآن يستخدمه أكثر من 10,000 مواطن!"
+                </blockquote>
+                <div class="flex items-center justify-center space-x-4 space-x-reverse text-sm">
+                    <div class="flex items-center">
+                        <i class="fas fa-trophy text-yellow-500 ml-1"></i>
+                        <span>جائزة الابتكار</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-download text-teal ml-1"></i>
+                        <span>10K+ تحميل</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass-effect rounded-3xl p-6 card-glow">
+                <div class="text-center mb-6">
+                    <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-9.jpg" alt="Success Story 2" class="w-20 h-20 rounded-full mx-auto mb-4 border-3 border-teal">
+                    <h3 class="text-xl font-bold text-charcoal">عمر الحسني</h3>
+                    <p class="text-teal font-semibold">ناشط بيئي • 25 سنة</p>
+                </div>
+                <blockquote class="text-gray-600 text-center italic mb-4">
+                    "بدأت مبادرة لزراعة 1000 شجرة في المدينة. بفضل دعم المنصة والمجتمع، نجحنا في زراعة 1500 شجرة!"
+                </blockquote>
+                <div class="flex items-center justify-center space-x-4 space-x-reverse text-sm">
+                    <div class="flex items-center">
+                        <i class="fas fa-tree text-green-500 ml-1"></i>
+                        <span>1500 شجرة</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-users text-magenta ml-1"></i>
+                        <span>200 متطوع</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass-effect rounded-3xl p-6 card-glow">
+                <div class="text-center mb-6">
+                    <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-7.jpg" alt="Success Story 3" class="w-20 h-20 rounded-full mx-auto mb-4 border-3 border-rose">
+                    <h3 class="text-xl font-bold text-charcoal">فاطمة الزهراء</h3>
+                    <p class="text-teal font-semibold">رائدة أعمال • 24 سنة</p>
+                </div>
+                <blockquote class="text-gray-600 text-center italic mb-4">
+                    "أسست مشروعي الخاص لدعم الحرفيين المحليين. حصلت على التمويل والإرشاد من خلال برامج المنصة."
+                </blockquote>
+                <div class="flex items-center justify-center space-x-4 space-x-reverse text-sm">
+                    <div class="flex items-center">
+                        <i class="fas fa-store text-purple-500 ml-1"></i>
+                        <span>15 حرفي</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-chart-line text-green-500 ml-1"></i>
+                        <span>300% نمو</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="newsletter" class="py-16 bg-gradient-to-r from-magenta to-teal">
+    <div class="container mx-auto px-6 text-center">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-4">ابق على اطلاع دائم</h2>
+            <p class="text-xl text-white/90 mb-8">
+                اشترك في النشرة الإخبارية ليصلك آخر الأخبار والفرص والفعاليات مباشرة
+            </p>
+            
+            <div class="glass-effect rounded-2xl p-8 max-w-2xl mx-auto">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <input type="email" placeholder="أدخل بريدك الإلكتروني" class="flex-1 px-6 py-4 rounded-xl border border-gray-300 focus:outline-none focus:border-magenta text-right">
+                    <button class="bg-charcoal hover:bg-gray-800 text-white px-8 py-4 rounded-xl font-bold transition-colors">
+                        اشترك الآن
+                    </button>
+                </div>
+                <p class="text-sm text-gray-600 mt-4">
+                    <i class="fas fa-lock ml-1"></i>
+                    نحترم خصوصيتك ولن نشارك بياناتك مع أي طرف ثالث
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white">2,847</div>
+                    <div class="text-white/80">عضو نشط</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white">156</div>
+                    <div class="text-white/80">مشروع منجز</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white">89</div>
+                    <div class="text-white/80">فعالية نظمت</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white">95%</div>
+                    <div class="text-white/80">رضا المستخدمين</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer id="footer" class="bg-charcoal text-white py-12">
+    <div class="container mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div>
+                <div class="flex items-center space-x-3 space-x-reverse mb-6">
+                    <div class="w-12 h-12 bg-magenta rounded-full flex items-center justify-center">
+                        <i class="fas fa-users text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-extrabold">منصة شباب الاستقلال</h3>
+                        <p class="text-sm text-teal">مشروع القنيطرة التجريبي</p>
+                    </div>
+                </div>
+                <p class="text-gray-300 leading-relaxed">
+                    منصة رقمية تفاعلية تهدف إلى تمكين الشباب من المشاركة الفعالة في صنع القرار المحلي وبناء مستقبل أفضل لمجتمعاتهم.
+                </p>
+            </div>
+            
+            <div>
+                <h4 class="text-lg font-bold mb-4">روابط مهمة</h4>
+                <ul class="space-y-3">
+                    <li><span class="text-gray-300 hover:text-magenta transition-colors cursor-pointer">عن المنصة</span></li>
+                    <li><span class="text-gray-300 hover:text-magenta transition-colors cursor-pointer">كيف تعمل</span></li>
+                    <li><span class="text-gray-300 hover:text-magenta transition-colors cursor-pointer">الأسئلة الشائعة</span></li>
+                    <li><span class="text-gray-300 hover:text-magenta transition-colors cursor-pointer">سياسة الخصوصية</span></li>
+                    <li><span class="text-gray-300 hover:text-magenta transition-colors cursor-pointer">شروط الاستخدام</span></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="text-lg font-bold mb-4">الخدمات</h4>
+                <ul class="space-y-3">
+                    <li><span class="text-gray-300 hover:text-magenta transition-colors cursor-pointer">المشاريع التطوعية</span></li>
+                    <li><span class="text-gray-300 hover:text-magenta transition-colors cursor-pointer">الفرص التدريبية</span></li>
+                    <li><span class="text-gray-300 hover:text-magenta transition-colors cursor-pointer">ورش العمل</span></li>
+                    <li><span class="text-gray-300 hover:text-magenta transition-colors cursor-pointer">الاستشارات</span></li>
+                    <li><span class="text-gray-300 hover:text-magenta transition-colors cursor-pointer">الدعم التقني</span></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="text-lg font-bold mb-4">تواصل معنا</h4>
+                <div class="space-y-3 mb-6">
+                    <div class="flex items-center space-x-3 space-x-reverse">
+                        <i class="fas fa-map-marker-alt text-magenta"></i>
+                        <span class="text-gray-300">القنيطرة، المغرب</span>
+                    </div>
+                    <div class="flex items-center space-x-3 space-x-reverse">
+                        <i class="fas fa-phone text-magenta"></i>
+                        <span class="text-gray-300">+212 537 123 456</span>
+                    </div>
+                    <div class="flex items-center space-x-3 space-x-reverse">
+                        <i class="fas fa-envelope text-magenta"></i>
+                        <span class="text-gray-300">info@istiqlal-youth.ma</span>
+                    </div>
+                </div>
+                
+                <div class="flex space-x-4 space-x-reverse">
+                    <span class="w-10 h-10 bg-magenta hover:bg-rose rounded-full flex items-center justify-center transition-colors cursor-pointer">
+                        <i class="fab fa-facebook-f"></i>
+                    </span>
+                    <span class="w-10 h-10 bg-magenta hover:bg-rose rounded-full flex items-center justify-center transition-colors cursor-pointer">
+                        <i class="fab fa-twitter"></i>
+                    </span>
+                    <span class="w-10 h-10 bg-magenta hover:bg-rose rounded-full flex items-center justify-center transition-colors cursor-pointer">
+                        <i class="fab fa-instagram"></i>
+                    </span>
+                    <span class="w-10 h-10 bg-magenta hover:bg-rose rounded-full flex items-center justify-center transition-colors cursor-pointer">
+                        <i class="fab fa-linkedin-in"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-700 mt-12 pt-8 text-center">
+            <p class="text-gray-400">
+                © 2024 منصة شباب الاستقلال - مشروع القنيطرة التجريبي. جميع الحقوق محفوظة.
+            </p>
+        </div>
+    </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate budget bars on scroll
+    const budgetBars = document.querySelectorAll('.budget-bar');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animationPlayState = 'running';
+            }
+        });
+    });
+    
+    budgetBars.forEach(bar => {
+        observer.observe(bar);
+    });
+    
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+    
+    // Add parallax effect to hero background
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const heroSection = document.getElementById('hero');
+        if (heroSection) {
+            // Updated parallax calculation for better effect
+            const parallaxSpeed = 0.4;
+            const yPos = scrolled * parallaxSpeed;
+            // Apply transform using 'translate3d' for better performance
+            heroSection.style.transform = `translate3d(0, ${yPos}px, 0)`;
+        }
+    });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Location AI Demo</title>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.js"></script>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        height: 100vh;
+        display: flex;
+      }
+
+      .map-container {
+        flex: 1;
+        position: relative;
+      }
+
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+
+      .chat-container {
+        width: 400px;
+        background: #f8f9fa;
+        border-left: 1px solid #dee2e6;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .chat-header {
+        padding: 20px;
+        background: #343a40;
+        color: white;
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      .chat-messages {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        min-height: 0;
+      }
+
+      .message {
+        margin-bottom: 15px;
+        padding: 12px;
+        border-radius: 8px;
+        max-width: 100%;
+        word-wrap: break-word;
+      }
+
+      .user-message {
+        background: #007bff;
+        color: white;
+        margin-left: 20px;
+      }
+
+      .ai-message {
+        background: #e9ecef;
+        color: #343a40;
+        margin-right: 20px;
+      }
+
+      .chat-input {
+        padding: 20px;
+        border-top: 1px solid #dee2e6;
+        background: white;
+      }
+
+      .input-group {
+        display: flex;
+        gap: 10px;
+      }
+
+      #message-input {
+        flex: 1;
+        padding: 12px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      #send-button {
+        padding: 12px 20px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      #send-button:hover {
+        background: #0056b3;
+      }
+
+      #send-button:disabled {
+        background: #6c757d;
+        cursor: not-allowed;
+      }
+
+      .loading {
+        color: #6c757d;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="map-container">
+      <div id="map"></div>
+    </div>
+
+    <div class="chat-container">
+      <div class="chat-header">Location AI Assistant</div>
+
+      <div class="chat-messages" id="chatMessages">
+        <div class="message ai-message">
+          Welcome! I'm your Location AI assistant. Ask me anything about
+          geographic data, locations, or spatial analysis.
+        </div>
+      </div>
+
+      <div class="chat-input">
+        <div class="input-group">
+          <input
+            type="text"
+            id="message-input"
+            placeholder="Ask about locations, maps, or geographic data..."
+            maxlength="500"
+          />
+          <button id="send-button">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Initialize Mapbox map
+      mapboxgl.accessToken = 'pk.eyJ1IjoibWVkYmVuMzAwMSIsImEiOiJjbWd2eDJ0eTUwY3YxMmtzaTdkeTE0cm41In0.lhtTimdS05yPgkF7J8fExQ'; // Your public token
+
+      const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/standard', // Latest Mapbox Standard style
+        projection: 'globe',
+        center: [-74.006, 40.7128], // NYC coordinates
+        zoom: 10,
+        config: {
+          basemap: {
+            showPointOfInterestLabels: false
+          }
+        }
+      });
+
+      // Add navigation control
+      map.addControl(new mapboxgl.NavigationControl());
+
+      // Set atmosphere style when the style loads
+      map.on('style.load', () => {
+        map.setFog({}); // Set default atmosphere style
+      });
+
+      // Chat functionality
+      const messageInput = document.getElementById('message-input');
+      const sendButton = document.getElementById('send-button');
+      const chatMessages = document.getElementById('chatMessages');
+
+      function addMessage(content, isUser = false) {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message');
+        messageDiv.classList.add(isUser ? 'user-message' : 'ai-message');
+        messageDiv.textContent = content;
+
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      function addStreamingMessage(content) {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message', 'ai-message');
+        messageDiv.textContent = content;
+
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        return messageDiv;
+      }
+
+      function clearMapLayers() {
+        // Remove existing GeoJSON sources and layers
+        if (map.getSource('geojson-data')) {
+          if (map.getLayer('geojson-fill')) map.removeLayer('geojson-fill');
+          if (map.getLayer('geojson-line')) map.removeLayer('geojson-line');
+          if (map.getLayer('geojson-points')) map.removeLayer('geojson-points');
+          map.removeSource('geojson-data');
+        }
+      }
+
+      function addGeoJSONToMap(geojsonData) {
+        if (
+          !geojsonData ||
+          !geojsonData.features ||
+          geojsonData.features.length === 0
+        ) {
+          return;
+        }
+
+        try {
+          // Clear existing layers first
+          clearMapLayers();
+
+          // Add the GeoJSON source
+          map.addSource('geojson-data', {
+            'type': 'geojson',
+            'data': geojsonData
+          });
+
+          // Add layers for different geometry types
+
+          // Polygons (fill)
+          map.addLayer({
+            'id': 'geojson-fill',
+            'type': 'fill',
+            'source': 'geojson-data',
+            'slot': 'middle',
+            'filter': ['==', ['geometry-type'], 'Polygon'],
+            'paint': {
+              'fill-color': '#007bff',
+              'fill-opacity': 0.2
+            }
+          });
+
+          // Lines and polygon outlines
+          map.addLayer({
+            'id': 'geojson-line',
+            'type': 'line',
+            'source': 'geojson-data',
+            'slot': 'middle',
+            'filter': [
+              'in',
+              ['geometry-type'],
+              ['literal', ['LineString', 'Polygon']]
+            ],
+            'paint': {
+              'line-color': '#007bff',
+              'line-width': 2
+            }
+          });
+
+          // Points
+          map.addLayer({
+            'id': 'geojson-points',
+            'type': 'circle',
+            'source': 'geojson-data',
+            'filter': ['==', ['geometry-type'], 'Point'],
+            'paint': {
+              'circle-color': '#007bff',
+              'circle-radius': 6,
+              'circle-stroke-width': 2,
+              'circle-stroke-color': '#ffffff'
+            }
+          });
+
+          // Add click events for popups
+          map.on('click', 'geojson-points', (e) => {
+            const feature = e.features[0];
+            const popup = new mapboxgl.Popup()
+              .setLngLat(e.lngLat)
+              .setHTML(
+                `
+                            <div>
+                                <strong>${feature.properties.name || 'Location'}</strong>
+                                ${feature.properties.description ? `<br>${feature.properties.description}` : ''}
+                            </div>
+                        `
+              )
+              .addTo(map);
+          });
+
+          map.on('click', 'geojson-fill', (e) => {
+            const feature = e.features[0];
+            const popup = new mapboxgl.Popup()
+              .setLngLat(e.lngLat)
+              .setHTML(
+                `
+                            <div>
+                                <strong>${feature.properties.name || 'Area'}</strong>
+                                ${feature.properties.description ? `<br>${feature.properties.description}` : ''}
+                            </div>
+                        `
+              )
+              .addTo(map);
+          });
+
+          // Change cursor on hover
+          map.on('mouseenter', 'geojson-points', () => {
+            map.getCanvas().style.cursor = 'pointer';
+          });
+
+          map.on('mouseleave', 'geojson-points', () => {
+            map.getCanvas().style.cursor = '';
+          });
+
+          map.on('mouseenter', 'geojson-fill', () => {
+            map.getCanvas().style.cursor = 'pointer';
+          });
+
+          map.on('mouseleave', 'geojson-fill', () => {
+            map.getCanvas().style.cursor = '';
+          });
+
+          // Fit map to show all features
+          const bounds = new mapboxgl.LngLatBounds();
+          geojsonData.features.forEach((feature) => {
+            if (feature.geometry.type === 'Point') {
+              bounds.extend(feature.geometry.coordinates);
+            } else if (feature.geometry.type === 'LineString') {
+              feature.geometry.coordinates.forEach((coord) =>
+                bounds.extend(coord)
+              );
+            } else if (feature.geometry.type === 'Polygon') {
+              feature.geometry.coordinates[0].forEach((coord) =>
+                bounds.extend(coord)
+              );
+            }
+          });
+
+          if (!bounds.isEmpty()) {
+            map.fitBounds(bounds, { padding: 50 });
+          }
+        } catch (error) {
+          console.error('Error adding GeoJSON to map:', error);
+        }
+      }
+
+       async function executeMapCommands(commands) {
+        if (!commands || !Array.isArray(commands)) {
+          return;
+        }
+
+        console.log('Starting choreographed animations...');
+
+        // Second pass: Execute all commands with animations
+        for (const commandData of commands) {
+          try {
+            console.log(
+              `Executing ${commandData.command} with params:`,
+              commandData.params
+            );
+
+            const { command, params, wait_for_completion = true } = commandData;
+
+            switch (command) {
+              case 'flyTo':
+                if (wait_for_completion) {
+                  await new Promise((resolve) => {
+                    map.flyTo({
+                      ...params,
+                      // Add a callback when the animation completes
+                      callback: resolve
+                    });
+                    // Fallback timeout in case callback doesn't fire
+                    setTimeout(resolve, params.duration + 500 || 3500);
+                  });
+                } else {
+                  map.flyTo(params);
+                }
+                break;
+
+              case 'easeTo':
+                if (wait_for_completion) {
+                  await new Promise((resolve) => {
+                    map.easeTo({
+                      ...params,
+                      callback: resolve
+                    });
+                    // Fallback timeout
+                    setTimeout(resolve, params.duration + 500 || 2000);
+                  });
+                } else {
+                  map.easeTo(params);
+                }
+                break;
+
+              case 'jumpTo':
+                map.jumpTo(params);
+                // jumpTo is instantaneous, but add small delay for visual effect
+                if (wait_for_completion) {
+                  await new Promise((resolve) => setTimeout(resolve, 100));
+                }
+                break;
+
+              case 'fitBounds':
+                if (params.bounds) {
+                  if (wait_for_completion) {
+                    await new Promise((resolve) => {
+                      map.fitBounds(params.bounds, {
+                        ...params,
+                        callback: resolve
+                      });
+                      // Fallback timeout
+                      setTimeout(resolve, params.duration + 500 || 2000);
+                    });
+                  } else {
+                    map.fitBounds(params.bounds, params);
+                  }
+                }
+                break;
+
+              case 'setLights':
+                if (params.preset) {
+                  // Use light preset
+                  map.setConfigProperty(
+                    'basemap',
+                    'lightPreset',
+                    params.preset
+                  );
+                } else if (params.lights) {
+                  // Custom light configuration
+                  map.setLights(params.lights);
+                }
+                // Lighting changes are immediate
+                if (wait_for_completion) {
+                  await new Promise((resolve) => setTimeout(resolve, 100));
+                }
+                break;
+
+              case 'setFog':
+                map.setFog({
+                  'color': params.color || 'rgb(186, 210, 235)',
+                  'high-color': params['high-color'] || 'rgb(36, 92, 223)',
+                  'horizon-blend': params['horizon-blend'] || 0.02,
+                  'space-color': params['space-color'] || 'rgb(11, 11, 25)',
+                  'star-intensity': params['star-intensity'] || 0.6,
+                  'range': params.range || [0.5, 10]
+                });
+                // Fog changes are immediate
+                if (wait_for_completion) {
+                  await new Promise((resolve) => setTimeout(resolve, 100));
+                }
+                break;
+
+              case 'setRain':
+                map.setConfigProperty('basemap', 'showWeatherData', true);
+                map.setConfigProperty('basemap', 'weather', {
+                  'type': 'rain',
+                  'intensity': params.intensity || 0.5
+                });
+                // Weather changes are immediate
+                if (wait_for_completion) {
+                  await new Promise((resolve) => setTimeout(resolve, 100));
+                }
+                break;
+
+              case 'setSnow':
+                map.setConfigProperty('basemap', 'showWeatherData', true);
+                map.setConfigProperty('basemap', 'weather', {
+                  'type': 'snow',
+                  'intensity': params.intensity || 0.5
+                });
+                // Weather changes are immediate
+                if (wait_for_completion) {
+                  await new Promise((resolve) => setTimeout(resolve, 100));
+                }
+                break;
+
+              default:
+                console.warn(`Unknown map command: ${command}`);
+            }
+          } catch (error) {
+            console.error(
+              `Error executing map command ${commandData.command}:`,
+              error
+            );
+          }
+        }
+      }
+      async function sendMessage() {
+        const message = messageInput.value.trim();
+        if (!message) return;
+
+        // Add user message to chat
+        addMessage(message, true);
+
+        // Clear input and disable button
+        messageInput.value = '';
+        sendButton.disabled = true;
+
+        try {
+          const response = await fetch('/submit_prompt', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: message })
+          });
+
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+
+          const reader = response.body.getReader();
+          const decoder = new TextDecoder();
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            const chunk = decoder.decode(value);
+            const lines = chunk.split('\n');
+
+            for (const line of lines) {
+              if (line.startsWith('data: ')) {
+                const dataStr = line.slice(6);
+
+                if (dataStr === '[DONE]') {
+                  break;
+                }
+
+                try {
+                  const data = JSON.parse(dataStr);
+                  // Add each response as a separate message bubble
+                  addStreamingMessage(data.text);
+
+                  // If this is the final response and contains GeoJSON, add it to the map
+                  if (data.final && data.geojson) {
+                    console.log('Adding GeoJSON to map:', data.geojson);
+                    addGeoJSONToMap(data.geojson);
+                  }
+                  // If this response contains map commands, execute them
+                  if (data.final && data.map_commands) {
+                    console.log('Executing map commands:', data.map_commands);
+                    executeMapCommands(data.map_commands);
+                  }
+                } catch (e) {
+                  console.log('Skipping non-JSON line:', dataStr);
+                }
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          addMessage(
+            'Sorry, there was an error processing your request. Please try again.'
+          );
+        } finally {
+          sendButton.disabled = false;
+          messageInput.focus();
+        }
+      }
+
+      // Event listeners
+      sendButton.addEventListener('click', sendMessage);
+
+      messageInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+
+      // Focus on input when page loads
+      messageInput.focus();
+    </script>
+  </body>
+</html>
