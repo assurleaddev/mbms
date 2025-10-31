@@ -49,6 +49,10 @@ class LocationResponse(BaseModel):
         None,
         description="Optional list of map camera commands to choreograph map movements"
     )
+    weather: Optional[str] = Field(
+        None, 
+        description="A textual summary of the weather forecast, if requested."
+    )
 
 
 @CrewBase
@@ -63,7 +67,15 @@ class DemoProject():
             "url": "https://mcp.mapbox.com/mcp",
             "transport": "streamable-http",
             "headers": {"authorization": f"Bearer {os.environ['MAPBOX_ACCESS_TOKEN']}"}
+        },
+        
+        # --- THIS IS THE FINAL UPDATED PART ---
+        # We are changing the URL to match what supergateway just told us.
+        {
+            "url": "http://127.0.0.1:4004/sse",
+            "transport": "sse"
         }
+        # -----------------------------------
     ]
 
     @agent

@@ -3,12 +3,23 @@ help_task:
   description: >
     Use tools and your own general knowledge to answer this prompt: `{prompt}`
     Current year is {current_year}.
+
+    IMPORTANT: You are a Swiss specialist. You MUST check if the prompt is about 
+    Switzerland.
+    - If the prompt is about Switzerland (e.g., "weather in Zurich", "restaurants in Geneva"), 
+      answer it and use your tools.
+    - If the prompt is about any other country or location (e.g., "weather in Paris", "Eiffel Tower"), 
+      you MUST politely decline and state that you only handle requests for Switzerland.
+    
+    If the prompt asks for weather, use the `weather-get_daily` or 
+    `weather-get_hourly` tools, but only for Swiss locations.
   expected_output: >
     A natural response in your own words.
-    Bonus points if you add any relevant coordinates into the response.
-    Try to include geojsons and coordinates from directions tool and any other tools into response too as it will help to visualize the data downstream.
-    If geojsons get too big, try to retain top 10-20 points sampled from entire geometry as a simplification. We can still use that as crude approximation.
-    Use proper coordinate format [longitude, latitude] in WGS84 (EPSG:4326)
+    
+    - If the request is for Switzerland: Provide the answer, coordinates, and weather.
+    - If the request is NOT for Switzerland: A polite refusal, e.g., "I'm sorry, 
+      I am a Swiss specialist and can only provide information about locations in Switzerland."
+
   agent: helpful_agent
 
 # New task for GeoJSON 
@@ -18,20 +29,22 @@ geojson_enrichment_task:
     
     Extract the following information:
     1. "text": The textual response that will be displayed to the user (clean, user-friendly format)
-    2. "geojson": Valid GeoJSON FeatureCollection representing any geographic elements mentioned in the response
+    2. "geojson": Valid GeoJSON FeatureCollection representing any geographic elements 
+       mentioned in the response. ONLY include features that are in Switzerland.
+    3. "weather": A text summary of any weather forecast information from the response.
     
     For the GeoJSON section:
-    - Extract any locations, addresses, coordinates, routes, areas, or geographic references from the text
-    - Convert them to appropriate GeoJSON features (Point, LineString, Polygon)
-    - Do not try to represent polygons via lineString as it won't look very nice
-    - Do not try to extrapolate coordinates more than 50 meters to ensure you always provide accurate responses
-    - Use proper coordinate format [longitude, latitude] in WGS84 (EPSG:4326)
-    - Include meaningful properties for each feature (name, description)
-    - If no geographic data can be extracted, set geojson to null
-    - if the route is too long to represent with a crude line string of 10-20 points, maybe it's best to visualize only points without line string. We do not want lines that cut through city blocks.
+    - Extract any locations, addresses, coordinates, etc. from the text.
+    - CRITICAL: Only convert them to GeoJSON if they are located within Switzerland. 
+      If a location is not in Switzerland, ignore it.
+    - If no geographic data can be extracted (or if all data was non-Swiss), set geojson to null.
+    
+    For the Weather section:
+    - If the response contains weather forecast data (for a Swiss location), extract it.
+    - If no weather data is present, set weather to null.
     
   expected_output: >
-    Intermediate structured response with text and geojson fields for further processing.
+    Intermediate structured response with text, geojson, and weather fields for further processing.
   agent: geojson_enrichment_agent
   context:
     - help_task
@@ -41,7 +54,7 @@ camera_choreography_task:
         Take the structured response from the geojson_enrichment_task about: `{prompt}` and enhance it with choreographed map camera commands.
         
         Your job is to:
-        1. Keep the existing "text" and "geojson" content from the previous task
+        1. Keep the existing "text", "geojson", and "weather" content from the previous task
         2. Add "map_commands": A list of MapCommand objects that will create a cinematic experience
         
         For the map_commands section:
@@ -72,8 +85,7 @@ camera_choreography_task:
 
         The final output will use the LocationResponse Pydantic model.
     expected_output: >
-        Final structured response using LocationResponse model containing text, geojson, and map_commands fields. The map_commands should create a choreographed viewing experience that enhances the geographic narrative.
+        Final structured response using LocationResponse model containing text, geojson, weather, and map_commands fields. The map_commands should create a choreographed viewing experience that enhances the geographic narrative.
     agent: camera_choreographer_agent
     context:
         - geojson_enrichment_task
-

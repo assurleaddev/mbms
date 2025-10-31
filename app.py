@@ -26,6 +26,7 @@ def submit_prompt():
                 'text': crew_output['text'],
                 'geojson': crew_output['geojson'],
                 'map_commands': crew_output['map_commands'],
+                'weather': crew_output['weather'], # <-- ADD THIS LINE
                 'final': True
             }
 
@@ -35,6 +36,7 @@ def submit_prompt():
                 'text': 'Sorry, there was an error processing your request.',
                 'geojson': None,
                 'map_commands': None,
+                'weather': None, # <-- ADD THIS LINE
                 'final': True
             }
         

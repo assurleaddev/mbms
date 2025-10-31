@@ -131,8 +131,8 @@
 
       <div class="chat-messages" id="chatMessages">
         <div class="message ai-message">
-          Welcome! I'm your Location AI assistant. Ask me anything about
-          geographic data, locations, or spatial analysis.
+          Welcome! I'm your Swiss Location AI assistant. Ask me anything about
+          locations, maps, or weather in Switzerland.
         </div>
       </div>
 
@@ -157,8 +157,10 @@
         container: 'map',
         style: 'mapbox://styles/mapbox/standard', // Latest Mapbox Standard style
         projection: 'globe',
-        center: [-74.006, 40.7128], // NYC coordinates
-        zoom: 10,
+        // --- MODIFIED MAP CENTER AND ZOOM ---
+        center: [8.2275, 46.8182], // Center of Switzerland
+        zoom: 7, // Zoom to show the whole country
+        // ------------------------------------
         config: {
           basemap: {
             showPointOfInterestLabels: false
@@ -532,19 +534,38 @@
 
                 try {
                   const data = JSON.parse(dataStr);
-                  // Add each response as a separate message bubble
-                  addStreamingMessage(data.text);
+                  
+                  // --- START OF MODIFICATIONS ---
 
-                  // If this is the final response and contains GeoJSON, add it to the map
-                  if (data.final && data.geojson) {
-                    console.log('Adding GeoJSON to map:', data.geojson);
-                    addGeoJSONToMap(data.geojson);
+                  // Add the main text response
+                  if (data.text) {
+                    addStreamingMessage(data.text);
                   }
-                  // If this response contains map commands, execute them
-                  if (data.final && data.map_commands) {
-                    console.log('Executing map commands:', data.map_commands);
-                    executeMapCommands(data.map_commands);
+
+                  // If this is the final response, handle all data
+                  if (data.final) {
+                    // Add weather data as a separate message
+                    if (data.weather) {
+                      console.log('Adding weather data:', data.weather);
+                      // Add a small delay for a better chat effect
+                      await new Promise(resolve => setTimeout(resolve, 300));
+                      addStreamingMessage(data.weather);
+                    }
+
+                    // Add GeoJSON to the map
+                    if (data.geojson) {
+                      console.log('Adding GeoJSON to map:', data.geojson);
+                      addGeoJSONToMap(data.geojson);
+                    }
+
+                    // Execute map commands
+                    if (data.map_commands) {
+                      console.log('Executing map commands:', data.map_commands);
+                      executeMapCommands(data.map_commands);
+                    }
                   }
+                  // --- END OF MODIFICATIONS ---
+
                 } catch (e) {
                   console.log('Skipping non-JSON line:', dataStr);
                 }
